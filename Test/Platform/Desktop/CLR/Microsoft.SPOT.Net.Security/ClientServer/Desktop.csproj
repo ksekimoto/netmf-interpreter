@@ -4,6 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8E22D03A-94E0-4BB7-9ED3-C56DC5BB3B1F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <OutputPath>bin\Debug\</OutputPath>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.SPOT.Platform.Test</RootNamespace>
     <AssemblyName>Microsoft.SPOT.Platform.Test.Ssl</AssemblyName>

@@ -38,5 +38,5 @@ if( Test-Path -PathType Leaf $packDescriptionPath )
     Write-Host "Existing installation of CMSIS found"
     return
 }
-
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -UseBasicParsing -Uri "$packSourceURLBase/$packFileName" | Expand-Stream -Destination $dstPath

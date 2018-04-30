@@ -10,7 +10,9 @@
     <Project Include="CLR\Tools\TFConvert\Fonts\TrueType\TrueTypeFonts.wixproj" />
     <Project Include="Support\GenerateFrameworkList.proj" />
     <Project Include="Setup\build.dirproj" />
+<!-- 
     <Project Include="Test\build.dirproj" Condition="'$(NO_BUILD_TESTS)'==''" />
+-->
     <Project Include="Support\CreateReleaseInfo.proj" />
   </ItemGroup>
 

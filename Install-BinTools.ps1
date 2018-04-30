@@ -4,6 +4,6 @@ if( Test-Path -PathType Container (Join-Path $SPOROOT "bin\automation") )
     Write-Host "Existing tools installation found"
     return
 }
-
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -UseBasicParsing -Uri "http://netmf.github.io/downloads/build-tools.zip" | Expand-Stream -Destination $SPOROOT
 
