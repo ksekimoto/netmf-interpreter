@@ -6,7 +6,7 @@
 #define _DRIVERS_NETWORK_DEFINES_LWIP_H_ 1
 
 /* Pick min, default or max configuration based on platform */
-#include <lwip_selector.h>
+#include "../../../Solutions/GR_CITRUS/lwip_selector.h"
 
 #if !defined(NETWORK_MEMORY_PROFILE_LWIP__small) && !defined(NETWORK_MEMORY_PROFILE_LWIP__medium) && !defined(NETWORK_MEMORY_PROFILE_LWIP__large) && !defined(NETWORK_MEMORY_PROFILE_LWIP__custom)
 #error You must define a NETWORK_MEMORY_PROFILE_LWIP_xxx for this platform

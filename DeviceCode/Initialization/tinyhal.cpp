@@ -346,7 +346,10 @@ void HAL_EnterBooterMode()
     }
 }
 
-bool g_fDoNotUninitializeDebuggerPort = false;
+// 2016/12/10 KS
+// https://github.com/NETMF/netmf-interpreter/issues/496
+//bool g_fDoNotUninitializeDebuggerPort = false;
+bool g_fDoNotUninitializeDebuggerPort = true;
 
 void HAL_Initialize()
 {    

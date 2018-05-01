@@ -6,7 +6,7 @@
 #define _NET_DECL_LWIP_H_
 
 #ifndef TCPIP_LWIP
-#include <lwip_selector.h>
+#include "../../../Solutions/GR_CITRUS/lwip_selector.h"
 #endif 
 
 #ifndef TCPIP_LWIP

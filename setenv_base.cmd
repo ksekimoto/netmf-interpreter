@@ -26,6 +26,7 @@ SET COMPILER_TOOL=%1
 SET COMPILER_TOOL_VERSION_NUM=%2
 SET COMPILER_TOOL_VERSION=%1%2
 SET "ARG3=%~3"
+@rem SET ARG3=%~3
 
 SET TFSCONFIG=MFConfig.xml
 
@@ -53,13 +54,9 @@ set NetMfTargetsBaseDir=%SPOCLIENT%\Framework\IDE\Targets\
 set _SDROOT_=%SPOROOT:current=%
 if "%_SDROOT_:~-1%" == "\" set _SDROOT_=%_SDROOT_:~0,-1%
 
-
 rem @ make sure we start with a clean path
-if "%DOTNETMF_OLD_PATH%"=="" (
-goto :save_current_path
-) else (
+if "%DOTNETMF_OLD_PATH%"=="" goto :save_current_path
 goto :restore_path_from_old
-)
 
 :save_current_path
 set DOTNETMF_OLD_PATH=%PATH%
@@ -78,17 +75,35 @@ cd %CURRENTCD%
 
 set CURRENTCD=
 
-IF /I NOT "%COMPILER_TOOL%" == "VS" (
-    IF NOT "%VS150COMNTOOLS%" == "" (
-        CALL "%VS150COMNTOOLS%"VsDevCmd.bat
-    ) ELSE (    
-        @ECHO WARNING: Could not find VsDevCmd.bat.
-        @ECHO WARNING: VISUAL STUDIO 2017 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
-        @ECHO WARNING: MAKE SURE YOU ARE RUNNING FROM THE DEVELOPER COMMAND PROMPT
-        GOTO :EOF
-    )
-)
+@rem IF /I NOT "%COMPILER_TOOL%" == "VS" (
+@rem     IF NOT "%VS150COMNTOOLS%" == "" (
+@rem         ECHO "VsDevCmd.bat is called"
+@rem         CALL %VS150COMNTOOLS%VsDevCmd.bat
+@rem         ECHO "VsDevCmd.bat end"
+@rem     ) ELSE (    
+@rem         @ECHO WARNING: Could not find VsDevCmd.bat.
+@rem         @ECHO WARNING: VISUAL STUDIO 2017 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
+@rem         @ECHO WARNING: MAKE SURE YOU ARE RUNNING FROM THE DEVELOPER COMMAND PROMPT
+@rem         GOTO :EOF
+@rem     )
+@rem )
 
+IF /I "%COMPILER_TOOL%"=="VS"       GOTO :SET_TOOCHAIN
+
+IF "%VS150COMNTOOLS%" == ""         GOTO :VS_ERR
+
+@ECHO "VsDevCmd.bat is called"
+CALL "%VS150COMNTOOLS%VsDevCmd.bat"
+@ECHO "VsDevCmd.bat end"
+GOTO :SET_TOOLCHAIN
+
+:VS_ERR
+@ECHO WARNING: Could not find VsDevCmd.bat.
+@ECHO WARNING: VISUAL STUDIO 2017 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
+@ECHO WARNING: MAKE SURE YOU ARE RUNNING FROM THE DEVELOPER COMMAND PROMPT
+GOTO :EOF
+
+:SET_TOOLCHAIN
 set TINYCLR_USE_MSBUILD=1   
 
 Title MF %FLAVOR_WIN% (%COMPILER_TOOL% %COMPILER_TOOL_VERSION_NUM%)
@@ -122,6 +137,12 @@ SET COMPILER_TOOL_VERSION_NUM=%COMPILER_TOOL_VERSION_NUM:~0,3%
 SET COMPILER_TOOL_VERSION=%COMPILER_TOOL%%COMPILER_TOOL_VERSION_NUM:~0,3%
 set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
 
+IF "%4" == "SH" GOTO :SHGCC
+IF "%4" == "RX" GOTO :RXGCC
+IF "%4" == "RZ" GOTO :RZGCC
+IF "%4" == "KPIT_RZ" GOTO :KPIT_RZGCC
+IF "%4" == "H8" GOTO :H8GCC
+
 IF /I "%COMPILER_TOOL%"=="GCC" (
 IF EXIST "%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%" (
 set "ARMINC=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%\include"
@@ -133,7 +154,98 @@ set GNU_TARGET=arm-none-eabi
 @ECHO Could not find "%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%"
 GOTO :BAD_GCC_ARG
 ))
+GOTO :GCC_END
 
+:SHGCC
+set COMPILER_TOOL=GCC
+IF EXIST "%ARG3%\lib\gcc\sh-elf\%GNU_VERSION%" (
+set SHINC=%ARG3%\lib\gcc\sh-elf\%GNU_VERSION%\include
+set SHLIB=%ARG3%\lib\gcc\sh-elf\%GNU_VERSION%
+set GNU_TOOLS=%ARG3%
+set GNU_TOOLS_BIN=%ARG3%\bin
+set GNU_TARGET=sh-elf
+) ELSE (
+@ECHO Could not find %ARG3%\lib\gcc\sh-elf\%GNU_VERSION%
+GOTO :BAD_GCC_ARG
+)
+GOTO :GCC_END
+
+:RXGCC
+set COMPILER_TOOL=GCC
+IF EXIST "%ARG3%\lib\gcc\rx-elf\%GNU_VERSION%" (
+set RXINC=%ARG3%\lib\gcc\rx-elf\%GNU_VERSION%\include
+set RXLIB=%ARG3%\lib\gcc\rx-elf\%GNU_VERSION%
+set GNU_TOOLS=%ARG3%
+set GNU_TOOLS_BIN=%ARG3%\bin
+set GNU_TARGET=rx-elf
+) ELSE (
+@ECHO Could not find %ARG3%\lib\gcc\rx-elf\%GNU_VERSION%
+GOTO :BAD_GCC_ARG
+)
+GOTO :GCC_END
+
+:RZGCC
+set COMPILER_TOOL=GCC
+set PATH=%ARG3%\bin;%PATH%
+IF EXIST "%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%" (
+@rem set ARMINC=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%\include
+set ARMINC=%ARG3%\include
+set ARMLIB=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%
+set GNU_TOOLS=%ARG3%
+set GNU_TOOLS_BIN=%ARG3%\bin
+set GNU_TARGET=arm-none-eabi
+) ELSE (
+@ECHO Could not find %ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%
+GOTO :BAD_GCC_ARG
+)
+GOTO :GCC_END
+
+:KPIT_RZGCC
+set COMPILER_TOOL=GCC
+set PATH=%ARG3%\bin;%PATH%
+IF EXIST "%ARG3%\lib\gcc\arm-rz-eabi\%GNU_VERSION%" (
+@rem set RZINC=%ARG3%\lib\gcc\arm-rz-eabi\%GNU_VERSION%\include
+set RZINC=%ARG3%\include
+set RZLIB=%ARG3%\lib\gcc\arm-rz-eabi\%GNU_VERSION%
+set GNU_TOOLS=%ARG3%
+set GNU_TOOLS_BIN=%ARG3%\bin
+set GNU_TARGET=arm-rz-eabi
+) ELSE (
+@ECHO Could not find %ARG3%\lib\gcc\arm-rz-eabi\%GNU_VERSION%
+GOTO :BAD_GCC_ARG
+)
+GOTO :GCC_END
+
+:H8GCC
+set COMPILER_TOOL=GCC
+IF EXIST "%ARG3%\lib\gcc\h8300-elf\%GNU_VERSION%" (
+set H8INC=%ARG3%\lib\gcc\h8300-elf\%GNU_VERSION%\include
+set H8LIB=%ARG3%\lib\gcc\h8300-elf\%GNU_VERSION%\h8300h
+set GNU_TOOLS=%ARG3%
+set GNU_TOOLS_BIN=%ARG3%\bin
+set GNU_TARGET=h8300-elf
+) ELSE (
+@ECHO Could not find %ARG3%\lib\gcc\h8300-elf\%GNU_VERSION%
+GOTO :BAD_GCC_ARG
+)
+GOTO :GCC_END
+
+IF /I "%COMPILER_TOOL%"=="GCCOP" (
+IF EXIST "%ARG3%\include\elips_bs" (
+
+set ARMINC=%ARG3%\include\elips_bs
+set ARMLIB=%ARG3%\lib
+set GNU_TOOLS=%ARG3%
+set GNU_TOOLS_BIN=%ARG3%\bin
+set GNU_TARGET=arm-elf
+set COMPILER_PATH=%ARG3%
+
+) ELSE (
+@ECHO Could not find %ARG3%\include\elips_bs
+GOTO :BAD_GCC_ARG
+))
+
+:GCC_END
 GOTO :EOF
 
 :BAD_GCC_ARG

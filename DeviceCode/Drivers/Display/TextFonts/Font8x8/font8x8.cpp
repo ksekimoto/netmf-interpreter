@@ -1755,6 +1755,11 @@ const unsigned char* Font_GetGlyph( unsigned char c )
     return &font_8x8[c*8];
 }
 
+const unsigned char* Font_GetGlyph16(unsigned short u)
+{
+	Font_GetGlyph((unsigned char)u);
+}
+
 int Font_Width()
 {
     return 8;

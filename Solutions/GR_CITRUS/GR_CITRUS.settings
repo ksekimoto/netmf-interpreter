@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Author>Kentaro Sekimoto</Author>
+    <Description>GR-CITRUS board</Description>
+    <Documentation />
+    <PlatformGuid>{b8309fb2-0518-490c-ba9e-f2ced0b43ee5}</PlatformGuid>
+    <TARGETPLATFORM>GR_CITRUS</TARGETPLATFORM>
+    <PLATFORM>GR_CITRUS</PLATFORM>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <ENDIANNESS>le</ENDIANNESS>
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">RX63N</DEVICE_TYPE>
+    <INSTRUCTION_SET Condition="'$(INSTRUCTION_SET)' == ''">RX63N</INSTRUCTION_SET>
+<!--
+    <PLATFORM_EMULATED_FLOATINGPOINT>true</PLATFORM_EMULATED_FLOATINGPOINT>
+-->
+    <TCP_IP_STACK>LWIP</TCP_IP_STACK>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OEMSystemInfoString>GR_CITRUS by Kentaro Sekimoto</OEMSystemInfoString>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="Solutions\GR_CITRUS" />
+  </ItemGroup>
+  <ItemGroup>
+    <TinyCLR_Defines Include="PLATFORM_EMULATED_FLOATINGPOINT=1" />
+    <TinyCLR_Defines Include="PLATFORM_NO_CLR_TRACE=1" />
+    <TinyCLR_Defines Include="TINYCLR_NO_APPDOMAINS=1" />
+    <TinyCLR_Defines Include="TINYCLR_NO_IL_INLINE=1" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\RX63N\RX63N.settings" />
+</Project>

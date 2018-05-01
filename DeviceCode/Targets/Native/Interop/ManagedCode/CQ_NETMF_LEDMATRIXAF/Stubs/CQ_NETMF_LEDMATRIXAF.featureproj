@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FeatureName>CQ_NETMF_LEDMATRIXAF</FeatureName>
+    <Guid>{0652b7f5-eec3-403d-abae-53a48b943f99}</Guid>
+    <Description>&lt;Add Feature Description Here&gt;</Description>
+    <Groups />
+    <CQ_NETMF_LEDMATRIXAF_FEATUREPROJ>True</CQ_NETMF_LEDMATRIXAF_FEATUREPROJ>
+  </PropertyGroup>
+  <ItemGroup>
+    <DriverLibs Include="CQ_NETMF_LEDMATRIXAF.$(LIB_EXT)" />
+    <InteropFeature Include="CQ_NETMF_LEDMATRIXAF" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\CQ_NETMF_LEDMATRIXAF.pe" />
+    <RequiredProjects Include="C:\netmf44p\netmf-interpreter\DeviceCode\Targets\Native\Interop\ManagedCode\CQ_NETMF_LEDMATRIXAF\Stubs\dotnetmf.proj" />
+  </ItemGroup>
+</Project>
