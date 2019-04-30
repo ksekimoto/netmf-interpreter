@@ -21,6 +21,7 @@
     <Project Condition="Exists('$(VSSDK12INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs12\netmfvs2013.csproj" />
     <Project Condition="Exists('$(VSSDK14INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs14\netmfvs14.csproj" />
     <Project Condition="Exists('$(VSSDK15INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs15\netmfvs15.csproj" />
+    <Project Condition="Exists('$(VSSDK16INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs16\netmfvs16.csproj" />
   </ItemGroup>
 
   <Target Name="SignVsixContents">
@@ -41,6 +42,11 @@
     </ItemGroup>
     <ItemGroup Condition="Exists('$(VSSDK15INSTALLDIR)')" >
       <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.15.dll" >
+        <FileType>dll</FileType>
+      </FoundFileOfType>
+    </ItemGroup>
+    <ItemGroup Condition="Exists('$(VSSDK16INSTALLDIR)')" >
+      <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.16.dll" >
         <FileType>dll</FileType>
       </FoundFileOfType>
     </ItemGroup>
@@ -88,5 +94,6 @@
         <Warning Condition="!Exists('$(VSSDK12INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2013 SDK not found VSIX package will not be generated" />
         <Warning Condition="!Exists('$(VSSDK14INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2015 SDK not found VSIX package will not be generated" />
         <Warning Condition="!Exists('$(VSSDK15INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2017 SDK not found VSIX package will not be generated" />
+        <Warning Condition="!Exists('$(VSSDK16INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2019 SDK not found VSIX package will not be generated" />
     </Target>
 </Project>

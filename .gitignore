@@ -60,3 +60,5 @@ ReleaseNotesCrypto.txt
 /.settings
 /.project
 /.cproject
+/BuildOutput.vs2017
+/BuildOutput.vs2019

@@ -1,4 +1,4 @@
-@ECHO OFF
+@rem ECHO OFF
 
 @REM The automated build process can, and should, set the following environment variables prior to calling this command script
 @REM SignBuild=true           ; Submits the resulting binaries for signing, this will fail if the user does not have CODESIGN permissions
@@ -11,8 +11,13 @@ if /i "%1" == "-h" goto :ShowUsage
 
 if "%FLAVOR_SDK%" == "" set FLAVOR_SDK=RTM
 
-if /i "%VSSDK150Install%"=="" goto :MissingVSSDK
-if NOT EXIST "%VSSDK150Install%" goto :MissingVSSDK
+if /i NOT "%VSSDK150Install%"=="" goto :FindVSSDK
+if EXIST "%VSSDK150Install%" goto :FindVSSDK
+if /i NOT "%VSSDK160Install%"=="" goto :FindVSSDK
+if EXIST "%VSSDK160Install%" goto :FindVSSDK
+goto :MissingVSSDK
+
+:FindVSSDK
 
 SET BUILD_VERSION=%1
 if "%BUILD_VERSION%"=="" set BUILD_VERSION=0
@@ -30,7 +35,7 @@ IF "%WixMsiBuildNumberOverride%"=="" set WixMsiBuildNumberOverride=%BUILD_VERSIO
 set COMMON_BUILD_ROOT=%BUILD_SHARE%
 if NOT "%BUILD_BRANCH%"=="" set COMMON_BUILD_ROOT=%COMMON_BUILD_ROOT%\%BUILD_BRANCH%
 
-call setenv_vs.cmd 15
+call setenv_vs.cmd %VS_VER%
 
 SET PORT_BUILD=
 
