@@ -11,8 +11,8 @@ if /i "%1" == "-h" goto :ShowUsage
 
 if "%FLAVOR_SDK%" == "" set FLAVOR_SDK=RTM
 
-if /i "%VSSDK150Install%"=="" goto :MissingVSSDK
-if NOT EXIST "%VSSDK150Install%" goto :MissingVSSDK
+@rem if /i "%VSSDK140Install%"=="" goto :MissingVSSDK
+@rem if NOT EXIST "%VSSDK140Install%" goto :MissingVSSDK
 
 SET BUILD_VERSION=%1
 if "%BUILD_VERSION%"=="" set BUILD_VERSION=0
