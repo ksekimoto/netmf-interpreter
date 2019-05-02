@@ -1,4 +1,4 @@
-@rem ECHO OFF
+@ECHO OFF
 
 @REM The automated build process can, and should, set the following environment variables prior to calling this command script
 @REM SignBuild=true           ; Submits the resulting binaries for signing, this will fail if the user does not have CODESIGN permissions
@@ -11,13 +11,8 @@ if /i "%1" == "-h" goto :ShowUsage
 
 if "%FLAVOR_SDK%" == "" set FLAVOR_SDK=RTM
 
-if /i NOT "%VSSDK150Install%"=="" goto :FindVSSDK
-if EXIST "%VSSDK150Install%" goto :FindVSSDK
-if /i NOT "%VSSDK160Install%"=="" goto :FindVSSDK
-if EXIST "%VSSDK160Install%" goto :FindVSSDK
-goto :MissingVSSDK
-
-:FindVSSDK
+@rem if /i "%VSSDK140Install%"=="" goto :MissingVSSDK
+@rem if NOT EXIST "%VSSDK140Install%" goto :MissingVSSDK
 
 SET BUILD_VERSION=%1
 if "%BUILD_VERSION%"=="" set BUILD_VERSION=0
@@ -36,6 +31,11 @@ set COMMON_BUILD_ROOT=%BUILD_SHARE%
 if NOT "%BUILD_BRANCH%"=="" set COMMON_BUILD_ROOT=%COMMON_BUILD_ROOT%\%BUILD_BRANCH%
 
 call setenv_vs.cmd %VS_VER%
+
+@rem SET VSSDK12INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VSSDK
+@rem SET VSSDK14INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VSSDK
+@rem SET VSSDK15INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VSSDK
+@rem SET VSSDK16INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VSSDK
 
 SET PORT_BUILD=
 

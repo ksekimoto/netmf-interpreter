@@ -75,15 +75,15 @@ cd %CURRENTCD%
 
 set CURRENTCD=
 
-IF /I NOT "%COMPILER_TOOL%" == "VS" (
-    IF NOT "%VS140COMNTOOLS%" == "" (
-        CALL "%VS140COMNTOOLS%"vsvars32.bat
-    ) ELSE (    
-        @ECHO WARNING: Could not find vsvars32.bat.
-        @ECHO WARNING: VISUAL STUDIO 2015 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
-        GOTO :EOF
-    )
-)
+@rem IF /I NOT "%COMPILER_TOOL%" == "VS" (
+@rem     IF NOT "%VS140COMNTOOLS%" == "" (
+@rem         CALL "%VS140COMNTOOLS%"vsvars32.bat
+@rem     ) ELSE (    
+@rem         @ECHO WARNING: Could not find vsvars32.bat.
+@rem         @ECHO WARNING: VISUAL STUDIO 2015 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
+@rem         GOTO :EOF
+@rem     )
+@rem )
 
 @rem IF /I NOT "%COMPILER_TOOL%"=="VS"   GOTO :SET_TOOLCHAIN
 @rem IF "%VS160COMNTOOLS%" == ""         GOTO :VS_ERR
@@ -310,7 +310,7 @@ set VSSDK15INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs15\
 if NOT EXIST "%VSSDK15INSTALLDIR%" set VSSDK15INSTALLDIR=%VSSDK150Install%
 
 set VSSDK16INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs16\
-echo %VSSDK16INSTALLDIR%
+
 rem VSSDK150INSTALL (not VSSDK160INSTALL) is defined for Visual Studio 2019
 if NOT EXIST "%VSSDK16INSTALLDIR%" set VSSDK16INSTALLDIR=%VSSDK160Install%
 
@@ -328,6 +328,7 @@ IF "%COMPILER_TOOL_VERSION_NUM%"=="15" (
   IF "" == "%VS150COMNTOOLS%" GOTO BAD_VS_ARG
   ECHO "Visual Studio 2017 VsDevCmd.bat starts"
   CALL "%VS150COMNTOOLS%VsDevCmd.bat"
+  set MSBuildToolsPath=%VSSDKINSTALL%\MSBuild\Current\Bin
   GOTO :EOF
 )
 

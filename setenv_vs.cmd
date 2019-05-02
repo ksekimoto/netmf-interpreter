@@ -1,4 +1,4 @@
-@rem echo off
+@echo off
 
 IF NOT "" == "%1" SET VS_VER=%1
 IF "" == "%VS_VER%" SET VS_VER=16
