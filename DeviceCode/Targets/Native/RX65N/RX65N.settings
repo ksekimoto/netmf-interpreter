@@ -1,0 +1,26 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>RX65N</Name>
+    <CpuName>RX65N</CpuName>
+    <DefaultISA>ARM</DefaultISA>
+    <Guid>{2788DEFC-23B8-48FE-8A97-854ECA980015}</Guid>
+    <Description>
+    </Description>
+    <Documentation>
+    </Documentation>
+    <ProjectPath>$(SPOCLIENT)\devicecode\Targets\Native\RX65N\RX65N.settings</ProjectPath>
+    <PLATFORM_FAMILY>RX65N</PLATFORM_FAMILY>
+    <CustomFilter>RX65N</CustomFilter>
+    <INSTRUCTION_SET Condition="'$(INSTRUCTION_SET)'==''">RX65N</INSTRUCTION_SET>
+    <TARGETPROCESSOR>RX65N</TARGETPROCESSOR>
+    <TARGETCODEBASE>RX65N</TARGETCODEBASE>
+    <TARGETCODEBASETYPE>Native</TARGETCODEBASETYPE>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'">
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">RX65N</DEVICE_TYPE>
+    <BUILD_TOOL_GUID>{722B0D5D-1243-4557-913F-61FAB04E9209}</BUILD_TOOL_GUID>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\Targets\Native\RX65N" />
+  </ItemGroup>
+</Project>

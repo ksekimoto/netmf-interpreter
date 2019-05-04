@@ -1,4 +1,4 @@
-@rem echo off
+@echo off
 
 set PORT_BUILD=
 set NO_ADS_WRAPPER=

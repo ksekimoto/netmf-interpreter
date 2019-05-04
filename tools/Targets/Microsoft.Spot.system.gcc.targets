@@ -4,7 +4,7 @@
     <BuildToolName>GCC</BuildToolName>
     <BuildToolGuid>{722B0D5D-1243-4557-913F-61FAB04E9209}</BuildToolGuid>
     <Documentation></Documentation>
-    <ProcessorTypes>XScale;ARM7TDMI;ARM7TDMI-S;arm920t;arm926EJ-S;SH2;SH2A;RX62N;RX63N;RX64M;H8;RZA1</ProcessorTypes>
+    <ProcessorTypes>XScale;ARM7TDMI;ARM7TDMI-S;arm920t;arm926EJ-S;SH2;SH2A;RX62N;RX63N;RX64M;RX65N;H8;RZA1</ProcessorTypes>
     <ISAs>arm;thumb;thumb2</ISAs>
   </PropertyGroup>
 
@@ -23,6 +23,7 @@
     <LINK Condition="'$(INSTRUCTION_SET)'=='rx62n'">"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ld.exe"</LINK>
     <LINK Condition="'$(INSTRUCTION_SET)'=='rx63n'">"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ld.exe"</LINK>
     <LINK Condition="'$(INSTRUCTION_SET)'=='rx64m'">"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ld.exe"</LINK>
+    <LINK Condition="'$(INSTRUCTION_SET)'=='rx65n'">"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ld.exe"</LINK>
     <AR>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ar.exe"</AR>
     <NM>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-nm.exe"</NM>
     <FROMELF>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-objcopy.exe"</FROMELF>
@@ -66,6 +67,7 @@
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx62n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -ffunction-sections -fomit-frame-pointer -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx63n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'"     >$(CC_CPP_COMMON_FLAGS) -ffunction-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'"     >$(CC_CPP_COMMON_FLAGS) -fno-strict-aliasing -fno-delete-null-pointer-checks -fmessage-length=0 -fno-builtin -mno-unaligned-access</CC_CPP_COMMON_FLAGS>
     <CPP_FLAGS           Condition="'$(INSTRUCTION_SET)'=='rza1'"     >$(CPP_FLAGS) -fno-rtti</CPP_FLAGS>
@@ -119,6 +121,8 @@
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx63n'  and '$(ENDIANNESS)'=='be'">$(AS_CC_CPP_COMMON_FLAGS) -mbig-endian-data</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'  and '$(ENDIANNESS)'=='le'">$(AS_CC_CPP_COMMON_FLAGS) -mlittle-endian-data</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'  and '$(ENDIANNESS)'=='be'">$(AS_CC_CPP_COMMON_FLAGS) -mbig-endian-data</AS_CC_CPP_COMMON_FLAGS>
+    <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'  and '$(ENDIANNESS)'=='le'">$(AS_CC_CPP_COMMON_FLAGS) -mlittle-endian-data</AS_CC_CPP_COMMON_FLAGS>
+    <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'  and '$(ENDIANNESS)'=='be'">$(AS_CC_CPP_COMMON_FLAGS) -mbig-endian-data</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'   and '$(ENDIANNESS)'=='le'">$(AS_CC_CPP_COMMON_FLAGS) -mlittle-endian</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'   and '$(ENDIANNESS)'=='be'">$(AS_CC_CPP_COMMON_FLAGS) -mbig-endian</AS_CC_CPP_COMMON_FLAGS>
   </PropertyGroup>
@@ -208,6 +212,7 @@
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx62n'" >$(CC_CPP_COMMON_FLAGS) -DPLATFORM_RX62N_$(TARGETPROCESSOR) -DPLATFORM_RX62N_$(TARGETPLATFORM) -DTARGETLOCATION_$(TARGETLOCATION) -DRX62N</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx63n'" >$(CC_CPP_COMMON_FLAGS) -DPLATFORM_RX63N_$(TARGETPROCESSOR) -DPLATFORM_RX63N_$(TARGETPLATFORM) -DTARGETLOCATION_$(TARGETLOCATION) -DRX63N</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'" >$(CC_CPP_COMMON_FLAGS) -DPLATFORM_RX64M_$(TARGETPROCESSOR) -DPLATFORM_RX64M_$(TARGETPLATFORM) -DTARGETLOCATION_$(TARGETLOCATION) -DRX64M -DCOMPILE_RX</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'" >$(CC_CPP_COMMON_FLAGS) -DPLATFORM_RX65N_$(TARGETPROCESSOR) -DPLATFORM_RX65N_$(TARGETPLATFORM) -DTARGETLOCATION_$(TARGETLOCATION) -DRX65N -DCOMPILE_RX</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'"  >$(CC_CPP_COMMON_FLAGS) -DPLATFORM_RZA1_$(TARGETPROCESSOR) -DPLATFORM_RZA1_$(TARGETPLATFORM) -DTARGETLOCATION_$(TARGETLOCATION) -DRZA1</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='h8'"    >$(CC_CPP_COMMON_FLAGS) -DPLATFORM_H8 -DPLATFORM_H8_$(TARGETPROCESSOR) -DPLATFORM_H8_$(TARGETPLATFORM) -DTARGETLOCATION_$(TARGETLOCATION) -DH8</CC_CPP_COMMON_FLAGS>
 
@@ -256,6 +261,7 @@
     <CC_CPP_INCS Condition="'$(INSTRUCTION_SET)'=='rx62n'" >$(CC_CPP_INCS) -I"$(RXINC)"</CC_CPP_INCS>
     <CC_CPP_INCS Condition="'$(INSTRUCTION_SET)'=='rx63n'" >$(CC_CPP_INCS) -I"$(RXINC)"</CC_CPP_INCS>
     <CC_CPP_INCS Condition="'$(INSTRUCTION_SET)'=='rx64m'" >$(CC_CPP_INCS) -I"$(RXINC)"</CC_CPP_INCS>
+    <CC_CPP_INCS Condition="'$(INSTRUCTION_SET)'=='rx65n'" >$(CC_CPP_INCS) -I"$(RXINC)"</CC_CPP_INCS>
     <CC_CPP_INCS Condition="'$(INSTRUCTION_SET)'=='h8'"    >$(CC_CPP_INCS) -I"$(H8INC)"</CC_CPP_INCS>
     <CC_CPP_INCS>$(CC_CPP_INCS) @(IncludePaths->'-I$(CLRROOT)\%(relativedir)%(filename)',' ')</CC_CPP_INCS>
     <CC_CPP_INCS>$(CC_CPP_INCS) @(DirectIncludePaths->'-I%(FullPath)',' ')</CC_CPP_INCS>
@@ -289,6 +295,7 @@
     <LINK_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx62n'">$(LINK_FLAGS) -static --gc-sections</LINK_FLAGS>
     <LINK_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx63n'">$(LINK_FLAGS) -static --gc-sections</LINK_FLAGS>
     <LINK_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'">$(LINK_FLAGS) -static --gc-sections</LINK_FLAGS>
+    <LINK_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'">$(LINK_FLAGS) -static --gc-sections</LINK_FLAGS>
   </PropertyGroup>
    
   <PropertyGroup>
@@ -301,6 +308,7 @@
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx62n' and '$(OutputType)'=='Library'">RXBuildLib</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx63n' and '$(OutputType)'=='Library'">RXBuildLib</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx64m' and '$(OutputType)'=='Library'">RXBuildLib</TargetRule>
+    <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx65n' and '$(OutputType)'=='Library'">RXBuildLib</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rza1'  and '$(OutputType)'=='Library'">RZBuildLib</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='h8'    and '$(OutputType)'=='Library'">H8BuildLib</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='arm'   and '$(OutputType)'=='Executable'">ArmBuildAXF</TargetRule>
@@ -309,6 +317,7 @@
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx62n' and '$(OutputType)'=='Executable'">RXBuildAXF</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx63n' and '$(OutputType)'=='Executable'">RXBuildAXF</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx64m' and '$(OutputType)'=='Executable'">RXBuildAXF</TargetRule>
+    <TargetRule Condition="'$(INSTRUCTION_SET)'=='rx65n' and '$(OutputType)'=='Executable'">RXBuildAXF</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='rza1'  and '$(OutputType)'=='Executable'">RZBuildAXF</TargetRule>
     <TargetRule Condition="'$(INSTRUCTION_SET)'=='h8'    and '$(OutputType)'=='Executable'">H8BuildAXF</TargetRule>
   </PropertyGroup>
@@ -366,6 +375,14 @@
     <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='rx64m'" >$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
     <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='rx64m'" >$(GNU_TOOLS)\lib\gcc\$(GNU_TARGET)\$(GNU_VERSION)</GNU_LIBGCC_DIR>
     <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='rx64m'" ></ExtraLibs>
+
+    <LIBGCC>libgcc.a</LIBGCC>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC' and '$(INSTRUCTION_SET)'=='rx65n'" >
+    <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='rx65n'" >$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
+    <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='rx65n'" >$(GNU_TOOLS)\lib\gcc\$(GNU_TARGET)\$(GNU_VERSION)</GNU_LIBGCC_DIR>
+    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='rx65n'" ></ExtraLibs>
 
     <LIBGCC>libgcc.a</LIBGCC>
   </PropertyGroup>
@@ -578,7 +595,7 @@
     <Exec Condition="'$(ADD_LOAD_IMAGE_CRC)'=='true'" Command="$(TOOLS_DIR)\BuildHelper -hashBuild $(EXEName).bin$(ImageLocation) $(EXEName).symdefs" />
   </Target>
 
-  <Target Name="RxBuildAXF" Condition="('$(INSTRUCTION_SET)'=='rx62n' or '$(INSTRUCTION_SET)'=='rx63n' or '$(INSTRUCTION_SET)'=='rx64m') and '$(OutputType)'=='Executable'" DependsOnTargets="RxCompileCPP;RxCompileC;RxAssemble;$(ExtraEXETargets);BuildScatterfile" Inputs="@(EXEInputs);@(InputLibs);@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)');@(EXEScatterFile)" Outputs="@(EXEOutput)">
+  <Target Name="RxBuildAXF" Condition="('$(INSTRUCTION_SET)'=='rx62n' or '$(INSTRUCTION_SET)'=='rx63n' or '$(INSTRUCTION_SET)'=='rx64m' or '$(INSTRUCTION_SET)'=='rx65n') and '$(OutputType)'=='Executable'" DependsOnTargets="RxCompileCPP;RxCompileC;RxAssemble;$(ExtraEXETargets);BuildScatterfile" Inputs="@(EXEInputs);@(InputLibs);@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)');@(EXEScatterFile)" Outputs="@(EXEOutput)">
     <!-- 
         The GCC archiver does not support concatening libraries into a single one. The only way is to extract all the obj files then rearchive them altogether. 
         However, we probably want to consider using a BuildTask instead of using the following ugly script. 
@@ -599,8 +616,8 @@
     <!-- single file format -->
     <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -j FVECTORS_TBL -O srec              @(EXEOutput) $(EXEName).mot"  Condition="('$(INSTRUCTION_SET)'=='rx62n' or '$(INSTRUCTION_SET)'=='rx63n')" />
     <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -j FVECTORS_TBL -O ihex --gap-fill 0 @(EXEOutput) $(EXEName).ihex" Condition="('$(INSTRUCTION_SET)'=='rx62n' or '$(INSTRUCTION_SET)'=='rx63n')" />
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -j FVECTORS_TBL -j EXVECTORS_TBL -O srec              @(EXEOutput) $(EXEName).mot"  Condition="('$(INSTRUCTION_SET)'=='rx64m')" />
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -j FVECTORS_TBL -j EXVECTORS_TBL -O ihex --gap-fill 0 @(EXEOutput) $(EXEName).ihex" Condition="('$(INSTRUCTION_SET)'=='rx64m')" />
+    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -j FVECTORS_TBL -j EXVECTORS_TBL -O srec              @(EXEOutput) $(EXEName).mot"  Condition="('$(INSTRUCTION_SET)'=='rx64m' or '$(INSTRUCTION_SET)'=='rx65n')" />
+    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -j FVECTORS_TBL -j EXVECTORS_TBL -O ihex --gap-fill 0 @(EXEOutput) $(EXEName).ihex" Condition="('$(INSTRUCTION_SET)'=='rx64m' or '$(INSTRUCTION_SET)'=='rx65n')" />
     <!-- bin format -->
     <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW -j ER_CONFIG -O binary @(EXEOutput) $(EXEName).bin"                      Condition="'$(MultipleOutputSections)'!='true'" />
     <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_RAM_RO -j ER_RAM_RW  -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
