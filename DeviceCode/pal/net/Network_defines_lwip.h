@@ -6,9 +6,39 @@
 #define _DRIVERS_NETWORK_DEFINES_LWIP_H_ 1
 
 /* Pick min, default or max configuration based on platform */
-#include "../../../Solutions/GR_CITRUS/lwip_selector.h"
+//#if defined(PLATFORM_ARM_SAM7X_EK)
+//#define NETWORK_MEMORY_PROFILE_LWIP__small      1
+//#elif defined(PLATFORM_ARM_iMXS_net) || defined(PLATFORM_ARM_iMXS_net_dbg) || defined(PLATFORM_ARM_iMXS_THUMB) || defined(PLATFORM_ARM_iMXS_net_open)
+//#define NETWORK_MEMORY_PROFILE_LWIP__medium      1
+//#elif defined(PLATFORM_ARM_EA_LPC2478)
+//#define NETWORK_MEMORY_PROFILE_LWIP__medium     1
+//#elif defined(PLATFORM_SH7619_EVB) || defined(PLATFORM_SH7619_NATIVE)
+//#define NETWORK_MEMORY_PROFILE_LWIP__medium     1
+//#elif defined(PLATFORM_SH7216_RSK)
+//#define NETWORK_MEMORY_PROFILE_LWIP__medium     1
+//#elif defined(PLATFORM_SH7264_M3A_HS64) || defined(PLATFORM_SH7264_RSK)
+//#define NETWORK_MEMORY_PROFILE_LWIP__medium     1
+//#else
+#include <lwip_selector.h>
+//#endif
 
-#if !defined(NETWORK_MEMORY_PROFILE_LWIP__small) && !defined(NETWORK_MEMORY_PROFILE_LWIP__medium) && !defined(NETWORK_MEMORY_PROFILE_LWIP__large) && !defined(NETWORK_MEMORY_PROFILE_LWIP__custom)
+#if defined(PLATFORM_ARM_CQ_FRK_FM3) || \
+	defined(PLATFORM_ARM_CQ_FRK_NXP_ARM) || \
+	defined(PLATFORM_ARM_CQ_FRK_RX62N) || \
+	defined(PLATFORM_ARM_WKLANNXP) || \
+	defined(PLATFORM_RX62N_WKLCD62N) || \
+	defined(PLATFORM_RX63N_GR_SAKURA)
+#define RAM_64K
+#elif defined(PLATFORM_ARM_WXMP3PLCD_FM3) || \
+    defined(PLATFORM_SH2A_WKLCD2A)  || \
+    defined(PLATFORM_RX64M_GR_KAEDE)
+#define RAM_128K
+#else
+#define RAM_64K
+#endif
+
+
+#if !defined(NETWORK_MEMORY_PROFILE_LWIP__small) && !defined(NETWORK_MEMORY_PROFILE_LWIP__medium) && !defined(NETWORK_MEMORY_PROFILE_LWIP__large)
 #error You must define a NETWORK_MEMORY_PROFILE_LWIP_xxx for this platform
 #endif
 
@@ -19,69 +49,121 @@ been taken from lwiopts.small.h, lwipopts.h and lwipopts.big.h */
 
 /* MEM_SIZE: the size of the heap memory. If the application will send
 a lot of data that needs to be copied, this should be set high. */
+#if defined(RAM_64K)
+#define MEM_SIZE__min                       (8*1024)
+#else
 #define MEM_SIZE__min                       (16*1024)
+#endif
 #define MEM_SIZE__default                   (64*1024)
 #define MEM_SIZE__max                       (1024*1024)  // TODO - this seems a bit extreme
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
    should be set high. */
+#if defined(RAM_64K)
+#define MEMP_NUM_PBUF__min                  10
+#else
 #define MEMP_NUM_PBUF__min                  16
+#endif
 #define MEMP_NUM_PBUF__default              32
 #define MEMP_NUM_PBUF__max                  32
 
 /* MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
    per active UDP "connection". */
+#if defined(RAM_64K)
+#define MEMP_NUM_UDP_PCB__min               4
+#else
 #define MEMP_NUM_UDP_PCB__min               6
+#endif
 #define MEMP_NUM_UDP_PCB__default           8
 #define MEMP_NUM_UDP_PCB__max               16
 
 /* MEMP_NUM_TCP_PCB: the number of simulatenously active TCP
    connections. */
+#if defined(RAM_64K)
+#define MEMP_NUM_TCP_PCB__min               4
+#else
 #define MEMP_NUM_TCP_PCB__min               8
+#endif
 #define MEMP_NUM_TCP_PCB__default           16
 #define MEMP_NUM_TCP_PCB__max               32
 
 /* MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP
    connections. */
+#if defined(RAM_64K)
 #define MEMP_NUM_TCP_PCB_LISTEN__min        4
+#else
+#define MEMP_NUM_TCP_PCB_LISTEN__min        4
+#endif
 #define MEMP_NUM_TCP_PCB_LISTEN__default    8
 #define MEMP_NUM_TCP_PCB_LISTEN__max        12
 
 /* MEMP_NUM_TCP_SEG: the number of simultaneously queued TCP
    segments. */
+#if defined(RAM_64K)
+#define MEMP_NUM_TCP_SEG__min               8
+#else
 #define MEMP_NUM_TCP_SEG__min               32
+#endif
 #define MEMP_NUM_TCP_SEG__default           64
 #define MEMP_NUM_TCP_SEG__max               128
 
 /* MEMP_NUM_SYS_TIMEOUT: the number of simulateously active
    timeouts. */
+#if defined(RAM_64K)
 #define MEMP_NUM_SYS_TIMEOUT__min           8   // set to 3 in lwiopts.small.h but didn't compile
+#else
+#define MEMP_NUM_SYS_TIMEOUT__min           8   // set to 3 in lwiopts.small.h but didn't compile
+#endif
 #define MEMP_NUM_SYS_TIMEOUT__default       12
 #define MEMP_NUM_SYS_TIMEOUT__max           16
 
 /* MEMP_NUM_NETBUF: the number of struct netbufs. */
+#if defined(RAM_64K)
+#define MEMP_NUM_NETBUF__min                3
+#else
 #define MEMP_NUM_NETBUF__min                8
+#endif
 #define MEMP_NUM_NETBUF__default            16
 #define MEMP_NUM_NETBUF__max                32
 
 /* MEMP_NUM_NETCONN: the number of struct netconns. */
+#if defined(RAM_64K)
+#define MEMP_NUM_NETCONN__min               4
+#else
 #define MEMP_NUM_NETCONN__min               10
+#endif
 #define MEMP_NUM_NETCONN__default           20
 #define MEMP_NUM_NETCONN__max               40
 
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
+#if defined(RAM_64K)
+#define PBUF_POOL_SIZE__min                 16
+#else
 #define PBUF_POOL_SIZE__min                 40
+#endif
 #define PBUF_POOL_SIZE__default             128
 #define PBUF_POOL_SIZE__max                 256
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
+#if defined(RAM_64K)
+#define PBUF_POOL_BUFSIZE__min              256
+#elif defined(RAM_128K)
 #define PBUF_POOL_BUFSIZE__min              512
+#else
+#define PBUF_POOL_BUFSIZE__min              512
+#endif
 #define PBUF_POOL_BUFSIZE__default          1024
 #define PBUF_POOL_BUFSIZE__max              2048
 
 /* TCP Maximum segment size. */
+#if defined(RAM_64K)
 #define TCP_MSS__min                        536
+#elif defined(RAM_128K)
+#define TCP_MSS__min                        536
+#else
+#define TCP_MSS__min                        536
+#endif
 #define TCP_MSS__default                    1460
 #define TCP_MSS__max                        1460
 
@@ -97,7 +179,13 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCP_SND_QUEUELEN__max               ((8*TCP_SND_BUF)/TCP_MSS)
 
 /* TCP receive window. */
-#define TCP_WND__min                        (2*1024)
+#if defined(RAM_64K)
+#define TCP_WND__min                        2*1024
+#elif defined(RAM_128K)
+#define TCP_WND__min                        (4*1024)
+#else
+#define TCP_WND__min                        (4*1024)
+#endif
 #define TCP_WND__default                    (8*1024)
 #define TCP_WND__max                        (32*1024)
 

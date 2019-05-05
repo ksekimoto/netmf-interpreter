@@ -29,7 +29,7 @@
 #include "RX65N_EDMAC_lwip.h"
 #include "RX65N_EDMAC_lwip_Adapter.h"
 
-#define DEBUG_EDMAC
+//#define DEBUG_EDMAC
 
 struct netif g_RX_EDMAC_NetIF;
 
@@ -47,13 +47,13 @@ void RX_EDMAC_status_callback(struct netif *netif)
         LwipLastIpAddress = netif->ip_addr.addr;
     }
 #if defined(DEBUG_EDMAC)
-    lcd_printf("\nLink Update: \r\n");
-    lcd_printf("IP: %d.%d.%d.%d\r\n",
+    debug_printf("\nLink Update: \r\n");
+    debug_printf("IP: %d.%d.%d.%d\r\n",
             (netif->ip_addr.addr >> 0) & 0xFF,
             (netif->ip_addr.addr >> 8) & 0xFF,
             (netif->ip_addr.addr >> 16) & 0xFF,
             (netif->ip_addr.addr >> 24) & 0xFF);
-    lcd_printf("GW: %d.%d.%d.%d\r\n",
+    debug_printf("GW: %d.%d.%d.%d\r\n",
             (netif->gw.addr >> 0) & 0xFF,
             (netif->gw.addr >> 8) & 0xFF,
             (netif->gw.addr >> 16) & 0xFF,
@@ -125,12 +125,23 @@ BOOL Network_Interface_Close(int index)
     return RX_EDMAC_LWIP_Driver::Close();
 }
 
+#define MP_HAL_UNIQUE_ID_ADDRESS (0xFE7F7D90)
+
+void get_unique_id(UINT8 *id) {
+    UINT32 *p = (UINT32 *)id;
+    p[0] = *(UINT32 *)(MP_HAL_UNIQUE_ID_ADDRESS + 0);
+    p[1] = *(UINT32 *)(MP_HAL_UNIQUE_ID_ADDRESS + 4);
+    p[2] = *(UINT32 *)(MP_HAL_UNIQUE_ID_ADDRESS + 6);
+    p[3] = *(UINT32 *)(MP_HAL_UNIQUE_ID_ADDRESS + 12);
+}
+
 int RX_EDMAC_LWIP_Driver::Open(int index)
 {
     struct ip_addr ipaddr, subnetmask, gateway;
     struct netif *pNetIF;
     int len;
     const SOCK_NetworkConfiguration *iface;
+    UINT8 id[16];
 
     iface = &g_NetworkConfig.NetworkInterfaces[index];
     len = g_RX_EDMAC_NetIF.hwaddr_len;
@@ -139,6 +150,10 @@ int RX_EDMAC_LWIP_Driver::Open(int index)
         g_RX_EDMAC_NetIF.hwaddr_len = len;
     }
     memcpy(g_RX_EDMAC_NetIF.hwaddr, iface->macAddressBuffer, len);
+    get_unique_id((UINT8 *)&id);
+    g_RX_EDMAC_NetIF.hwaddr[5] = id[15];
+    g_RX_EDMAC_NetIF.hwaddr[4] = id[14];
+    g_RX_EDMAC_NetIF.hwaddr[3] = id[13];
     ipaddr.addr     = iface->ipaddr;
     gateway.addr    = iface->gateway;
     subnetmask.addr = iface->subnetmask;
@@ -149,12 +164,12 @@ int RX_EDMAC_LWIP_Driver::Open(int index)
     LwipNetworkStatus = RX_EDMAC_LWIP_GetLinkStatus();
     if (LwipNetworkStatus == TRUE) {
 #if defined(DEBUG_EDMAC)
-        lcd_printf("Link OK\r\n");
+        debug_printf("Link OK\r\n");
 #endif
         netif_set_up(pNetIF);
     } else {
 #if defined(DEBUG_EDMAC)
-        lcd_printf("Link NG\r\n");
+        debug_printf("Link NG\r\n");
 #endif
     }
     InitCompletions(pNetIF);

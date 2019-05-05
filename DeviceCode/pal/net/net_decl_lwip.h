@@ -6,7 +6,7 @@
 #define _NET_DECL_LWIP_H_
 
 #ifndef TCPIP_LWIP
-#include "../../../Solutions/GR_CITRUS/lwip_selector.h"
+#include <lwip_selector.h>
 #endif 
 
 #ifndef TCPIP_LWIP
@@ -178,7 +178,7 @@
 #define ARP_TABLE_SIZE          10
 #endif
 #ifndef ARP_QUEUEING
-#define ARP_QUEUEING            0
+#define ARP_QUEUEING            1
 #endif
 
 /* ---------- IP options ---------- */

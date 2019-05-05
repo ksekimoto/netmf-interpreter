@@ -67,6 +67,9 @@
 #include "lwip\pbuf.h"
 #include "lwip\mem.h"
 
+//#define DEBUG_ETH_TX
+//#define DEBUG_ETH_RX
+
 #define HW_INTERRUPT
 
 extern struct netif g_RX_EDMAC_NetIF;
@@ -220,39 +223,39 @@ static void _phy_mii_write_1(void)
 {
     volatile INT32 j;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000006;
+        ETHERC0.PIR.LONG = 0x00000006;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000007;
+        ETHERC0.PIR.LONG = 0x00000007;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000007;
+        ETHERC0.PIR.LONG = 0x00000007;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000006;
+        ETHERC0.PIR.LONG = 0x00000006;
 }
 
 static void _phy_mii_write_0(void)
 {
     volatile INT32 j;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000002;
+        ETHERC0.PIR.LONG = 0x00000002;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000003;
+        ETHERC0.PIR.LONG = 0x00000003;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000003;
+        ETHERC0.PIR.LONG = 0x00000003;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000002;
+        ETHERC0.PIR.LONG = 0x00000002;
 }
 
 static void _phy_ta_z0(void)
 {
     volatile INT32 j;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000000;
+        ETHERC0.PIR.LONG = 0x00000000;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000001;
+        ETHERC0.PIR.LONG = 0x00000001;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000001;
+        ETHERC0.PIR.LONG = 0x00000001;
     for (j = MDC_WAIT; j > 0; j--)
-        ETHERC.PIR.LONG = 0x00000000;
+        ETHERC0.PIR.LONG = 0x00000000;
 }
 
 static void _phy_ta_10(void)
@@ -296,15 +299,15 @@ static void _phy_reg_read(UINT16 *data)
     i = 16;
     while (i-- > 0) {
         for(j = MDC_WAIT; j > 0; j--)
-            ETHERC.PIR.LONG = 0x00000000;
+            ETHERC0.PIR.LONG = 0x00000000;
         for(j = MDC_WAIT; j > 0; j--)
-            ETHERC.PIR.LONG = 0x00000001;
+            ETHERC0.PIR.LONG = 0x00000001;
         reg_data <<= 1;
-        reg_data |= (UINT16)((ETHERC.PIR.LONG & 0x00000008) >> 3);  /* MDI read  */
+        reg_data |= (UINT16)((ETHERC0.PIR.LONG & 0x00000008) >> 3);  /* MDI read  */
         for(j = MDC_WAIT; j > 0; j--)
-            ETHERC.PIR.LONG = 0x00000001;
+            ETHERC0.PIR.LONG = 0x00000001;
         for(j = MDC_WAIT; j > 0; j--)
-            ETHERC.PIR.LONG = 0x00000000;
+            ETHERC0.PIR.LONG = 0x00000000;
     }
     *data = reg_data;
 }
@@ -411,17 +414,17 @@ BOOL RX_EDMAC_lwip_ReadPhy(UINT32 phy_addr, UINT32 reg_addr, UINT32 *data, UINT3
 void RX_EDMAC_lwip_SetLinkSpeed(BOOL speed, BOOL fullduplex)
 {
     if (speed) {
-        ETHERC.ECMR.BIT.RTM = 1;        // 100Mbps
+        ETHERC0.ECMR.BIT.RTM = 1;        // 100Mbps
         //debug_printf("Ethernet Link 100M/");
     } else {
-        ETHERC.ECMR.BIT.RTM = 0;        // 10Mbps
+        ETHERC0.ECMR.BIT.RTM = 0;        // 10Mbps
         //debug_printf("Ethernet Link 10M/");
     }
     if (fullduplex) {
-        ETHERC.ECMR.BIT.DM = 1;         // full duplex
+        ETHERC0.ECMR.BIT.DM = 1;         // full duplex
         //debug_printf("Full Duplex.\r\n");
     } else {
-        ETHERC.ECMR.BIT.DM = 0;         // half duplex
+        ETHERC0.ECMR.BIT.DM = 0;         // half duplex
         //debug_printf("Half Duplex.\r\n");
     }
 }
@@ -444,13 +447,13 @@ BOOL RX_EDMAC_LWIP_Init(struct netif *pNetIf)
     le0.mac_addr[4] = pNetIf->hwaddr[4];
     le0.mac_addr[5] = pNetIf->hwaddr[5];
 
-    EDMAC.EDMR.BIT.SWR = 1;                 // reset EDMAC and ETHERC
+    EDMAC0.EDMR.BIT.SWR = 1;                 // reset EDMAC and ETHERC0
     for (i = 0; i < 0x00000100; i++) ;
 
-    ETHERC.ECSR.LONG = 0x00000037;          // clear all ETHERC status BFR, PSRTO, LCHNG, MPD, ICD
-    ETHERC.ECSIPR.LONG = 0x00000020;        // disable ETHERC status change interrupt
-    ETHERC.RFLR.LONG = 1518;                // ether payload is 1500+ CRC
-    ETHERC.IPGR.LONG = 0x00000014;          // Intergap is 96-bit time
+    ETHERC0.ECSR.LONG = 0x00000037;          // clear all ETHERC0 status BFR, PSRTO, LCHNG, MPD, ICD
+    ETHERC0.ECSIPR.LONG = 0x00000020;        // disable ETHERC0 status change interrupt
+    ETHERC0.RFLR.LONG = 1518;                // ether payload is 1500+ CRC
+    ETHERC0.IPGR.LONG = 0x00000014;          // Intergap is 96-bit time
 
     mac_h = ((UINT32)pNetIf->hwaddr[0] << 24) | \
             ((UINT32)pNetIf->hwaddr[1] << 16) | \
@@ -461,23 +464,23 @@ BOOL RX_EDMAC_LWIP_Init(struct netif *pNetIf)
     if (mac_h == 0 && mac_l == 0) {
         //
     } else {
-        ETHERC.MAHR = mac_h;
-        ETHERC.MALR.LONG = mac_l;
+        ETHERC0.MAHR = mac_h;
+        ETHERC0.MALR.LONG = mac_l;
     }
 
     /* EDMAC */
-    EDMAC.EESR.LONG = 0x47FF0F9F;           // clear all EDMAC status bits
-    EDMAC.RDLAR = (void *)le0.rxcurrent;    // initialize Rx Descriptor List Address
-    EDMAC.TDLAR = (void *)le0.txcurrent;    // initialize Tx Descriptor List Address
-    EDMAC.TRSCER.LONG = 0x00000000;         // copy-back status is RFE & TFE only
-    EDMAC.TFTR.LONG = 0x00000000;           // threshold of Tx_FIFO
-    EDMAC.FDR.LONG = 0x00000707;            // transmit fifo & receive fifo is 2048 bytes
+    EDMAC0.EESR.LONG = 0x47FF0F9F;           // clear all EDMAC status bits
+    EDMAC0.RDLAR = (void *)le0.rxcurrent;    // initialize Rx Descriptor List Address
+    EDMAC0.TDLAR = (void *)le0.txcurrent;    // initialize Tx Descriptor List Address
+    EDMAC0.TRSCER.LONG = 0x00000000;         // copy-back status is RFE & TFE only
+    EDMAC0.TFTR.LONG = 0x00000000;           // threshold of Tx_FIFO
+    EDMAC0.FDR.LONG = 0x00000707;            // transmit fifo & receive fifo is 2048 bytes
     // Configure receiving method
     // b0        RNR - Receive Request Bit Reset - Continuous reception of multiple frames is possible.
     // b1        RNC - Receive Request Bit Non-Reset Mode - The RR bit is automatically reset.
     // b31:b2    Reserved set to 0
-    EDMAC.RMCR.LONG   = 0x00000001;
-    EDMAC.EDMR.BIT.DE = 1;
+    EDMAC0.RMCR.LONG   = 0x00000001;
+    EDMAC0.EDMR.BIT.DE = 1;
 
     // Initialize PHY
     flag = ENET_PHY_lwip_init();
@@ -486,18 +489,21 @@ BOOL RX_EDMAC_LWIP_Init(struct netif *pNetIf)
 #if defined(HW_INTERRUPT)
     // Enable interrupt
     // Sets up interrupt when you use interrupt
-    EDMAC.EESIPR.LONG = 0x00040000;
+    EDMAC0.EESIPR.LONG = 0x00040000;
     //ICU.IER[4].BIT.IEN0 = 1;
     //ICU.IPR[8].BYTE = 4;    // Set priority level
-    IPR(ETHER, EINT) = 4;
-    IEN(ETHER, EINT) = 1;
+    IPR(EXDMAC, EXDMAC0I) = 4;
+    IEN(EXDMAC, EXDMAC0I) = 1;
+    ICU.IPR[IPR_ICU_GROUPAL1].BIT.IPR = 12;
+    ICU.IER[IER_ICU_GROUPAL1].BIT.IEN1 = 1;
+    ICU.GENAL1.BIT.EN4 = 1;
 #endif
     // Enable receive and transmit
-    ETHERC.ECMR.BIT.RE = 1;
-    ETHERC.ECMR.BIT.TE = 1;
+    ETHERC0.ECMR.BIT.RE = 1;
+    ETHERC0.ECMR.BIT.TE = 1;
 
     // Enable EDMAC receive
-    EDMAC.EDRRR.LONG  = 0x00000001;
+    EDMAC0.EDRRR.LONG  = 0x00000001;
     for (i = 0; i < 0x00000100; i++) ;
     return true;
 }
@@ -510,7 +516,7 @@ BOOL RX_EDMAC_LWIP_open(struct netif *pNetIf)
 void RX_EDMAC_LWIP_close(struct netif *pNetIf)
 {
     le0.open = 0;
-    ETHERC.ECMR.LONG = 0x00000000;        // disable TE and RE
+    ETHERC0.ECMR.LONG = 0x00000000;        // disable TE and RE
     le0.irqlock = 1;
 }
 
@@ -528,6 +534,9 @@ err_t RX_EDMAC_LWIP_xmit(struct netif *pNetIf, struct pbuf *pPBuf)
         // ToDo - Can't work when a packet is fragmented.
         INT32 len = pPBuf->len;
         data = (INT8 *)pPBuf->payload;
+#if defined(DEBUG_ETH_TX)
+        debug_printf("ETHTX:%d\r\n", len);
+#endif
         for (xmit = 0; len > 0; len -= xmit) {
             while ((xmit = _eth_fifoWrite(le0.txcurrent, data, (INT32)len)) < 0);
             if (xmit == len)
@@ -542,8 +551,8 @@ err_t RX_EDMAC_LWIP_xmit(struct netif *pNetIf, struct pbuf *pPBuf)
         pPBuf = pPBuf->next;
     }
     le0.stat.tx_packets++;
-    if (EDMAC.EDTRR.LONG == 0x00000000)
-        EDMAC.EDTRR.LONG = 0x00000001;
+    if (EDMAC0.EDTRR.LONG == 0x00000000)
+        EDMAC0.EDTRR.LONG = 0x00000001;
     return ERR_OK;
 }
 
@@ -556,8 +565,8 @@ void RX_EDMAC_LWIP_recv(struct netif *pNetIf)
     struct pbuf *pPBuf;
 
     GLOBAL_LOCK(encIrq);
-    if ((EDMAC.EESR.LONG & 0x00040000) != 0)
-        EDMAC.EESR.LONG |= 0x00040000;
+    if ((EDMAC0.EESR.LONG & 0x00040000) != 0)
+        EDMAC0.EESR.LONG |= 0x00040000;
     while (flag) {
         recvd = _eth_fifoRead(le0.rxcurrent, (INT8 *)&tmpbuf);
         readcount++;
@@ -573,11 +582,10 @@ void RX_EDMAC_LWIP_recv(struct netif *pNetIf)
             le0.rxcurrent->status &= ~(RFOVER | RAD | RMAF | RRF | RTLF | RTSF | PRE | CERF);
             le0.rxcurrent->status |= ACT;
             le0.rxcurrent = le0.rxcurrent->next;
-            if (EDMAC.EDRRR.LONG == 0x00000000L)
+            if (EDMAC0.EDRRR.LONG == 0x00000000L)
                 /* Restart if stopped */
-                EDMAC.EDRRR.LONG = 0x00000001L;
+                EDMAC0.EDRRR.LONG = 0x00000001L;
         } else {
-            /* We have a good buffer. */
             if ((le0.rxcurrent->status & FP1) == FP1) {
                 /* Beginning of a frame */
                 receivesize = 0;
@@ -599,11 +607,16 @@ void RX_EDMAC_LWIP_recv(struct netif *pNetIf)
             le0.rxcurrent->status |= ACT;
             le0.rxcurrent = le0.rxcurrent->next;
             //data += recvd;
-            if (EDMAC.EDRRR.LONG == 0x00000000L)
+            if (EDMAC0.EDRRR.LONG == 0x00000000L)
                 /* Restart if stopped */
-                EDMAC.EDRRR.LONG = 0x00000001L;
+                EDMAC0.EDRRR.LONG = 0x00000001L;
         }
     }
+#if defined(DEBUG_ETH_RX)
+    if (receivesize > 0) {
+        debug_printf("TOTRX:%d\r\n", receivesize);
+    }
+#endif
 #ifndef HW_INTERRUPT
     InterruptTaskCompletion.EnqueueDelta64(INT_PERIOD);
 #endif
@@ -638,10 +651,17 @@ void RX_EDMAC_interrupt(void)
 #ifdef __cplusplus
 extern "C" {
 #endif
-void __attribute__ ((interrupt)) INT_Excep_ETHER_EINT(void)
-{
-    RX_EDMAC_interrupt();
+// ICU GROUPAL1
+// vec: 113
+void __attribute__ ((interrupt)) INT_Excep_ICU_GROUPAL1(void) {
+    if (1 == ICU.GRPAL1.BIT.IS4) {
+        RX_EDMAC_interrupt();
+    }
 }
+//void __attribute__ ((interrupt)) INT_Excep_ETHER_EINT(void)
+//{
+//    RX_EDMAC_interrupt();
+//}
 #ifdef __cplusplus
 }
 #endif

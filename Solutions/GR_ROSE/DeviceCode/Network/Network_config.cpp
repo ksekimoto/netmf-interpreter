@@ -31,7 +31,7 @@ NETWORK_CONFIG g_NetworkConfig =
     1,      // interface count
     {       
         {                                      
-            0, //SOCK_NETWORKCONFIGURATION_FLAGS_DHCP,         /*flags         to enable wireless bitwise OR this value with  SOCK_NETWORKCONFIGURATION_FLAGS_TYPE__set(SOCK_NETWORKCONFIGURATION_FLAGS_WIRELESS)*/
+            1, //SOCK_NETWORKCONFIGURATION_FLAGS_DHCP,         /*flags         to enable wireless bitwise OR this value with  SOCK_NETWORKCONFIGURATION_FLAGS_TYPE__set(SOCK_NETWORKCONFIGURATION_FLAGS_WIRELESS)*/
             SOCK_MAKE_IP_ADDR_LITTLEEND(192,168,  0,160), /*ip address */
             SOCK_MAKE_IP_ADDR_LITTLEEND(255,255,255,  0), /*subnet mask*/  
             SOCK_MAKE_IP_ADDR_LITTLEEND(192,168,  0,  1), /*gateway    */
@@ -40,7 +40,10 @@ NETWORK_CONFIG g_NetworkConfig =
             SOCK_NETWORKCONFIGURATION_INTERFACETYPE_ETHERNET,     /* Change to SOCK_NETWORKCONFIGURATION_INTERFACETYPE_WIRELESS_80211 for wireless */ 
             6,              /*mac address length*/                  
             {               /*mac address*/                         
-                0x00, 0x08, 0xa7, 0x1a, 0x55, 0x66, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                // Renesas: 74:90:50:xx:xx:xx
+                // 0x74, 0x90, 0x50, 0x12, 0x34, 0x56, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                // Private: 0e:xx:xx:xx:xx:xx
+                0x0e, 0x90, 0x50, 0x12, 0x34, 0x56, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 

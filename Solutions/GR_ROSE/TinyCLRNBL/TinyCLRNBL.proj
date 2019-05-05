@@ -30,7 +30,7 @@
     <EnableLCD>true</EnableLCD>
     <EnableLEDMATRIX>false</EnableLEDMATRIX>
     <EnableLEDMATRIXAF>false</EnableLEDMATRIXAF>
-    <EnableLWIP>false</EnableLWIP>
+    <EnableLWIP>true</EnableLWIP>
     <EnableMP3>false</EnableMP3>
     <EnableOneWire>true</EnableOneWire>
     <EnableOpenSSL>false</EnableOpenSSL>

@@ -62,3 +62,7 @@ ReleaseNotesCrypto.txt
 /.cproject
 /BuildOutput.vs2017
 /BuildOutput.vs2019
+/DeviceCode/Targets/Native/RX65N_LIB
+/releases/vs2013
+/releases/vs2015
+/Solutions/GR_ROSE/build_flash_release.txt

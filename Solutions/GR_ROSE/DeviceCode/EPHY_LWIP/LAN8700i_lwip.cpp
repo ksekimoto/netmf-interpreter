@@ -22,7 +22,7 @@
 #include "..\..\..\DeviceCode\Targets\Native\RX65N\DeviceCode\RX65N_EDMAC_lwip\RX65N_EDMAC_lwip.h"
 #include "..\..\..\DeviceCode\Targets\Native\RX65N\DeviceCode\RX65N_EDMAC_lwip\RX65N_EDMAC_lwip_adapter.h"
 
-//#define DEBUG_PHY_LCD
+//#define DEBUG_PHY
 
 extern void RX_EDMAC_lwip_SetLinkSpeed(BOOL speed, BOOL fullduplex);
 
@@ -73,13 +73,13 @@ static BOOL PhyVerifyId(UINT32 addr)
 
     if (!RX_EDMAC_lwip_ReadPhy(addr, PHY_REG_IDR1, &id1, MII_RD_TOUT))
         return false;
-#if defined(DEBUG_PHY_LCD)
-    dbg_printf("PHY: ReadID OK %04x\r\n", id1);
+#if defined(DEBUG_PHY)
+    debug_printf("PHY: ReadID OK %04x\r\n", id1);
 #endif
     if (!RX_EDMAC_lwip_ReadPhy(addr, PHY_REG_IDR2, &id2, MII_RD_TOUT))
         return false;
-#if defined(DEBUG_PHY_LCD)
-    dbg_printf("PHY: ReadID OK %04x\r\n", id2);
+#if defined(DEBUG_PHY)
+    debug_printf("PHY: ReadID OK %04x\r\n", id2);
 #endif
     return true;
 }
@@ -106,14 +106,14 @@ static BOOL PhySetLinkSpeed (UINT32 addr)
 
 #if defined(AUTO_NEGOTIATE)
     if (!PhyAutoNegotiate(addr)) {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("Warning: Ethernet PHY Link autonegotiation failure.\r\n");
+#if defined(DEBUG_PHY)
+        debug_printf("Warning: Ethernet PHY Link autonegotiation failure.\r\n");
 #endif
         mbit_100 = true;
         full_duplex = true;
     } else {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("PHY: Auto Neg OK\r\n");
+#if defined(DEBUG_PHY)
+        debug_printf("PHY: Auto Neg OK\r\n");
 #endif
         if (!RX_EDMAC_lwip_ReadPhy(addr, PHY_REG_BMSR, &data, MII_RD_TOUT))
             return false;
@@ -151,30 +151,30 @@ BOOL ENET_PHY_lwip_init (void)
 {
     phy_addr = PHY_ADDR;
     if (PHY_Find(&phy_addr)) {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("PHY: Find OK id=%02x\r\n", phy_addr);
+#if defined(DEBUG_PHY)
+        debug_printf("PHY: Find OK id=%02x\r\n", phy_addr);
 #endif
     } else {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("PHY: Find NG\r\n");
+#if defined(DEBUG_PHY)
+        debug_printf("PHY: Find NG\r\n");
 #endif
         return false;
     }
     if (!PhyReset(phy_addr)) {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("Error: Phy reset\r\n");
+#if defined(DEBUG_PHY)
+        debug_printf("Error: Phy reset\r\n");
 #endif
         return false;
     }
     if (!PhyVerifyId(phy_addr)) {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("Error: Invalid Phy Id\r\n");
+#if defined(DEBUG_PHY)
+        debug_printf("Error: Invalid Phy Id\r\n");
 #endif
         return false;
     }
     if (!PhySetLinkSpeed(phy_addr)) {
-#if defined(DEBUG_PHY_LCD)
-        dbg_printf("Error: Link speed failure\r\n");
+#if defined(DEBUG_PHY)
+        debug_printf("Error: Link speed failure\r\n");
 #endif
         return false;
     }
