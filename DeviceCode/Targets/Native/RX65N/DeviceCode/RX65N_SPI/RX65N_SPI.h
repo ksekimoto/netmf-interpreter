@@ -49,7 +49,7 @@ int _debug_printf(int ch, const char* format, ...);
 #define SPI_TRACE3(ch, a, b, c)
 #endif
 
-#define BCLK        48000UL     // 48MHz: SPI input clock default
+#define BCLK    60000UL // 60MHz: SPI input clock default
 //#define CLK_FAST    24000UL     // 24MHz
 //#define CLK_SLOW    400UL       // 400KHz
 

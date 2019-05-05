@@ -107,10 +107,12 @@ void SetIPR(UINT32 spi_mod, int bit)
 void RX63N_SPI_Driver::SetSPIBits(UINT32 spi_mod, UINT32 spi_bits)
 {
     vp_rspi prspi = g_rspi[spi_mod];
-    if (spi_bits)
-        prspi->SPCMD0.WORD |= 0xEF80; // Command Reg: SPI mode: MODE0, 16bit, MSB first
-    else
-        prspi->SPCMD0.WORD |= 0xE780; // Command Reg: SPI mode: MODE0, 8bit, MSB first
+    if (spi_bits) {
+        prspi->SPCMD0.WORD |= 0x0F00; // Command Reg: SPI mode: MODE0, 16bit, MSB first
+    } else {
+        prspi->SPCMD0.WORD &= ~0x0F00;
+        prspi->SPCMD0.WORD |= 0x0700; // Command Reg: SPI mode: MODE0, 8bit, MSB first
+    }
 }
 
 void RX63N_SPI_Driver::SetSPIClk(UINT32 spi_mod, UINT32 spi_clk)
@@ -133,6 +135,18 @@ void SetPMR(UINT32 pin, UINT32 value)
         _PMR(port) &= ~(1 << bit);
 }
 
+void SetPinOut(UINT32 pin) {
+    UINT32 port = GPIO_PORT(pin);
+    UINT8 mask = GPIO_MASK(pin);
+    _PDR(port) |= mask;
+}
+
+void SetPinIn(UINT32 pin) {
+    UINT32 port = GPIO_PORT(pin);
+    UINT8 mask = GPIO_MASK(pin);
+    _PDR(port) &= ~mask;
+}
+
 void SelectSPIPin(UINT32 spi_mod)
 {
     UINT32 pin0 = SPI_PINS[spi_mod*3+0];
@@ -141,6 +155,9 @@ void SelectSPIPin(UINT32 spi_mod)
     SetPMR(pin0, 0);
     SetPMR(pin1, 0);
     SetPMR(pin2, 0);
+    SetPinOut(pin0);
+    SetPinOut(pin1);
+    SetPinIn(pin2);
     MPC.PWPR.BIT.B0WI = 0;
     MPC.PWPR.BIT.PFSWE = 1;
     _MPC(pin0) = 13;
@@ -204,11 +221,17 @@ void RX63N_SPI_Driver::SetSPIMod(UINT32 spi_mod, const SPI_CONFIGURATION &Config
     prspi->SPDCR.BYTE = 0x20;    // SPLW=1 long access
     prspi->SPCMD0.WORD = 0x0700; // LSBF=0, SPB=7, BRDV=0, CPOL=0, CPHA=0
     //prspi->SPBR.BYTE = BCLK/2/CLK_SLOW - 1;  //Bit rate
-    if (Configuration.MSK_IDLE != true)         // CPOL(Clock Polatity)
-        prspi->SPCMD0.BIT.CPOL = 1;
-    if (Configuration.MSK_SampleEdge != true)   // CPHA(Clock Phase)
-        prspi->SPCMD0.BIT.CPHA = 1;
-    prspi->SPCR.BYTE = 0xC9;     // Start SPI in master mode
+    if (Configuration.MSK_IDLE == true) {
+        prspi->SPCMD0.BIT.CPOL = 1; /* CPOL(Clock Polarity) */
+    } else {
+        prspi->SPCMD0.BIT.CPOL = 0; /* CPOL(Clock Polarity) */
+    }
+    if (Configuration.MSK_SampleEdge == true) {
+        prspi->SPCMD0.BIT.CPHA = 0; /* CPHA(Clock Phase) */
+    } else {
+        prspi->SPCMD0.BIT.CPHA = 1; /* CPHA(Clock Phase) */
+    }
+    prspi->SPCR.BYTE = 0xC8;     // Start SPI in master mode
     prspi->SPCR2.BYTE = 0;
 }
 
