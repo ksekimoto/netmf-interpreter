@@ -66,8 +66,8 @@
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='sh2a'"     >$(CC_CPP_COMMON_FLAGS) -m2a                            -fomit-frame-pointer -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx62n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -ffunction-sections -fomit-frame-pointer -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx63n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx600 -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx64m'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx64m -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rx65n'"    >$(CC_CPP_COMMON_FLAGS) -mcpu=rx64m -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'"     >$(CC_CPP_COMMON_FLAGS) -ffunction-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='rza1'"     >$(CC_CPP_COMMON_FLAGS) -fno-strict-aliasing -fno-delete-null-pointer-checks -fmessage-length=0 -fno-builtin -mno-unaligned-access</CC_CPP_COMMON_FLAGS>
     <CPP_FLAGS           Condition="'$(INSTRUCTION_SET)'=='rza1'"     >$(CPP_FLAGS) -fno-rtti</CPP_FLAGS>

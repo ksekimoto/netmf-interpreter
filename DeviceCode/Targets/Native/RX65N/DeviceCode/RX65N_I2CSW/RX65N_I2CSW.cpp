@@ -23,8 +23,8 @@
 //#define DEBUG_I2C_TX_DATA
 //#define DEBUG_I2C_RX_DATA
 
-#define SCLPIN RX65N_GPIO::P45
-#define SDAPIN RX65N_GPIO::P44
+#define SCLPIN RX65N_GPIO::P52
+#define SDAPIN RX65N_GPIO::P50
 
 #define I2C_ACK 0
 #define I2C_NACK    1
@@ -39,7 +39,7 @@
 #define SDA_LO  CPU_GPIO_SetPinState(SDAPIN, false)
 #define SDA_HI  CPU_GPIO_SetPinState(SDAPIN, true)
 
-#define I2C_FAST
+//#define I2C_FAST
 
 #ifdef I2C_FAST
 // 100KHz on DRAM with H8
