@@ -22,7 +22,9 @@
 
 //#define __RX_LITTLE_ENDIAN__
 #include "iodefine.h"
-#include "RX65N_SPI\RX65N_SPI.h"
+#include ".\RX65N_INTC\RX65N_INTC.h"
+#include ".\RX65N_SPI\RX65N_SPI.h"
+#include ".\RX65N_USART\RX65N_USART.h"
 
 #ifndef TRUE
 #define TRUE 1

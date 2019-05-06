@@ -70,7 +70,7 @@
 #define INSTRUMENTATION_H_GPIO_PIN      0
 
 #if 1
-//#define DEBUG_TEXT_PORT    COM1     // for debugging
+//#define DEBUG_TEXT_PORT    COM5     // for debugging
 #define DEBUG_TEXT_PORT    USB1
 #define STDIO              USB1
 #define DEBUGGER_PORT      USB1
@@ -126,9 +126,15 @@
 //
 
 // Port definitions
-#define TOTAL_USART_PORT       1
+#define TOTAL_USART_PORT       8
 #define COM1                   ConvertCOM_ComHandle(0)
 #define COM2                   ConvertCOM_ComHandle(1)
+#define COM3                   ConvertCOM_ComHandle(2)
+#define COM4                   ConvertCOM_ComHandle(3)
+#define COM5                   ConvertCOM_ComHandle(4)
+#define COM6                   ConvertCOM_ComHandle(5)
+#define COM7                   ConvertCOM_ComHandle(6)
+#define COM8                   ConvertCOM_ComHandle(7)
 
 #define TOTAL_USB_CONTROLLER   1
 #define USB1                   ConvertCOM_UsbHandle(0)
