@@ -65,7 +65,7 @@ static UINT8 ch_port[] = {
 };
 #define SCI_PORT_NUM    (sizeof(ch_port)/sizeof(UINT8))
 
-#define SCI_DEFAULT_PRIORITY 14
+#define SCI_DEFAULT_PRIORITY 12
 #define SCI_DEFAULT_BAUD    115200
 
 #define SCR_CKE_M   (1 << 0)

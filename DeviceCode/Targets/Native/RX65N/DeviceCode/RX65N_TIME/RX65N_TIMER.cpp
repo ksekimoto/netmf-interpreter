@@ -43,7 +43,7 @@ BOOL RX_TIMER_Driver::Initialize(UINT32 Timer, HAL_CALLBACK_FPN ISR, void* ISR_P
     if (Timer == 0) {
         // Timer == 0
         CMT0.CMCOR = 0xffff;
-        ICU.IPR[0x04].BIT.IPR = 0xe;            // IPR = 14 (15: highest priority)
+        ICU.IPR[0x04].BIT.IPR = 0x5;            // IPR = 14 (15: highest priority)
 #if CLKDEV == 8
         CMT0.CMCR.WORD = 0x0040;                // CMIE is Enable,CKS is PCLK/8
 #elif CLKDEV == 32
@@ -57,7 +57,7 @@ BOOL RX_TIMER_Driver::Initialize(UINT32 Timer, HAL_CALLBACK_FPN ISR, void* ISR_P
     } else {
         // Timer == 1
         CMT1.CMCOR = 0xffff;
-        ICU.IPR[0x05].BIT.IPR = 0xe;            // IPR = 14 (15: highest priority)
+        ICU.IPR[0x05].BIT.IPR = 0x5;            // IPR = 14 (15: highest priority)
 #if CLKDEV == 8
         CMT1.CMCR.WORD = 0x0040;                // CMIE is Enable,CKS is PCLK/8
 #elif CLKDEV == 32
